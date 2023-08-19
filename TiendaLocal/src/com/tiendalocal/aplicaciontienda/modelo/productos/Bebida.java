@@ -1,4 +1,4 @@
-package com.tiendalocal.aplicaciontienda;
+package com.tiendalocal.aplicaciontienda.modelo.productos;
 
 public class Bebida extends Producto{
     boolean contieneAlcohol;

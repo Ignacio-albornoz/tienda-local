@@ -1,4 +1,4 @@
-package com.tiendalocal.aplicaciontienda;
+package com.tiendalocal.aplicaciontienda.modelo.productos;
 
 //Clase abstracta Producto
 public abstract class Producto {
