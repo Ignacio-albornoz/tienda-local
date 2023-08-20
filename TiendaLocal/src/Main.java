@@ -16,12 +16,16 @@ public class Main {
 
         Bebida cerveza = new Bebida("KKK222", "Cerveza Patagonia", "cerveza realizada en algun lugar", 2, 399.50, 201.21, true, true, 5.7, false, true, vencimiento, (short) 450);
 
+        Bebida cervezaSinAlcohol = new Bebida("KKK222", "Cerveza Patagonia Sin Alcohol", "no recomendada para consumo", 2, 399.50, 201.21, true, false, 5.7, false, false, vencimiento, (short) 450);
+
+
         System.out.println(prdEnvasado2.getFechaVencimiento());
 
         prdEnvasado.setCalorias((short) 12);
         System.out.println(prdEnvasado.getFechaVencimiento());
         System.out.println(prdEnvasado2.getCalorias());
         System.out.println(cerveza.getNombre() + " " + cerveza.getCalorias());
+        System.out.println(cervezaSinAlcohol.getNombre() + " " + cervezaSinAlcohol.getGraduacionAlcoholica());
 
     }
 }
