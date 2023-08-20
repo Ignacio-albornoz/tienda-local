@@ -10,6 +10,7 @@ public class Bebida extends Producto implements Comestible {
     boolean importado;
     boolean comestible;
 
+    // Atributos específicos de los productos comestibles
     LocalDate fechaVencimento;
     short calorias;
 
@@ -73,9 +74,11 @@ public class Bebida extends Producto implements Comestible {
         this.comestible = comestible;
     }
 
+    //Metodos sobrescritos de la interfaz Comestible
     //TODO manejar null
     @Override
     public void setFechaVencimiento(LocalDate fechaVencimiento) {
+        //Validamos que el producto sea comestible
         if(this.isComestible()){
             this.fechaVencimento = fechaVencimiento;
         }  else {
@@ -90,6 +93,7 @@ public class Bebida extends Producto implements Comestible {
 
     @Override
     public void setCalorias(short calorias) {
+        //Validamos que el producto sea comestible
         if(this.comestible){
             this.calorias = calorias;
         } else {
