@@ -14,11 +14,16 @@ public class Bebida extends Producto implements Comestible {
     LocalDate fechaVencimento;
     short calorias;
 
-    //TODO Si contieneAlcohol = false, automaticamente graduacionAlcoholica = 0
+    //TODO analizar verificacion, si contieneAlcohol = true && graduacionAlcoholica <= 0, significa contieneAlcohol = false?
     public Bebida(String id, String nombre, String descripcion, int stock, double precio, double costo, boolean disponible, boolean contieneAlcohol, double graduacionAlcoholica, boolean importado, boolean comestible, LocalDate fechaVencimento, short calorias) {
         super(id, nombre, descripcion, stock, precio, costo, disponible);
         this.contieneAlcohol = contieneAlcohol;
-        this.graduacionAlcoholica = graduacionAlcoholica;
+        //Si contieneAlcohol = true, se le asigna la graduacion
+        if (contieneAlcohol){
+            this.graduacionAlcoholica = graduacionAlcoholica;
+        }else{
+            this.graduacionAlcoholica = 0;
+        }
         this.importado = importado;
         this.comestible = comestible;
         if (comestible){
@@ -53,9 +58,14 @@ public class Bebida extends Producto implements Comestible {
         return graduacionAlcoholica;
     }
 
-    //TODO Si contieneAlcohol = false, no se puede cargar graduacion
+    //Se valida contieneAlcohol = true, antes de cargar graduacionAlcoholica
     public void setGraduacionAlcoholica(double graduacionAlcoholica) {
-        this.graduacionAlcoholica = graduacionAlcoholica;
+        if (contieneAlcohol && graduacionAlcoholica > 0){
+            this.graduacionAlcoholica = graduacionAlcoholica;
+        } else {
+            //Si contieneAlcohol = false || graduacionAlcoholica <= 0. se asigna 0
+            this.graduacionAlcoholica = 0;
+        }
     }
 
     public boolean isImportado() {
