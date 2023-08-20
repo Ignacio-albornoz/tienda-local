@@ -1,10 +1,11 @@
 package com.tiendalocal.aplicaciontienda.modelo.productos;
 
 import com.tiendalocal.aplicaciontienda.modelo.productos.interfaces.Comestible;
+import com.tiendalocal.aplicaciontienda.modelo.productos.interfaces.Descuento;
 
 import java.time.LocalDate;
 
-public class Bebida extends Producto implements Comestible {
+public class Bebida extends Producto implements Comestible, Descuento {
     boolean contieneAlcohol;
     double graduacionAlcoholica;
     boolean importado;
@@ -13,6 +14,11 @@ public class Bebida extends Producto implements Comestible {
     // Atributos específicos de los productos comestibles
     LocalDate fechaVencimento;
     short calorias;
+
+
+    boolean descuentoAplicado;
+    int porcentajeDescuento;
+    double precioConDescuento;
 
     //TODO analizar verificacion, si contieneAlcohol = true && graduacionAlcoholica <= 0, significa contieneAlcohol = false?
     public Bebida(String id, String nombre, String descripcion, int stock, double precio, double costo, boolean disponible, boolean contieneAlcohol, double graduacionAlcoholica, boolean importado, boolean comestible, LocalDate fechaVencimento, short calorias) {
@@ -114,5 +120,37 @@ public class Bebida extends Producto implements Comestible {
     @Override
     public short getCalorias() {
         return calorias;
+    }
+
+    @Override
+    public void setEstadoDelDescuento(boolean estadoDelDescuento) {
+        this.descuentoAplicado = estadoDelDescuento;
+    }
+
+    @Override
+    public boolean getEstadoDelDescuento() {
+        return descuentoAplicado;
+    }
+
+    @Override
+    public void setPorcentajeDescuento(int porcentajeDescuento) {
+        this.porcentajeDescuento = porcentajeDescuento;
+    }
+
+    @Override
+    public int getPorcentajeDescuento() {
+        return porcentajeDescuento;
+    }
+
+    @Override
+    public void setPrecioConDescuento() {
+        if(descuentoAplicado && porcentajeDescuento > 0){
+            this.precioConDescuento = precio - (precio * porcentajeDescuento / 100);
+        }
+    }
+
+    @Override
+    public double getPrecioConDescuento() {
+        return precioConDescuento;
     }
 }

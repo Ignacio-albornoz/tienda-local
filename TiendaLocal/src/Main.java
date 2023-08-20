@@ -27,5 +27,14 @@ public class Main {
         System.out.println(cerveza.getNombre() + " " + cerveza.getCalorias());
         System.out.println(cervezaSinAlcohol.getNombre() + " " + cervezaSinAlcohol.getGraduacionAlcoholica());
 
+        cervezaSinAlcohol.setPorcentajeDescuento(15);
+        cervezaSinAlcohol.setPrecioConDescuento();
+        System.out.println(cervezaSinAlcohol.getPrecioConDescuento());
+
+        cervezaSinAlcohol.setEstadoDelDescuento(true);
+        cervezaSinAlcohol.setPrecioConDescuento();
+        System.out.println(cervezaSinAlcohol.getPrecioConDescuento());
+
+
     }
 }

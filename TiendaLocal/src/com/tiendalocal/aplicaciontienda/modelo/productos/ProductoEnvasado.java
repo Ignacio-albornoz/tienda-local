@@ -2,17 +2,23 @@ package com.tiendalocal.aplicaciontienda.modelo.productos;
 
 import com.tiendalocal.aplicaciontienda.modelo.productos.enums.TipoEnvase;
 import com.tiendalocal.aplicaciontienda.modelo.productos.interfaces.Comestible;
+import com.tiendalocal.aplicaciontienda.modelo.productos.interfaces.Descuento;
 
 import java.time.LocalDate;
 
-public class ProductoEnvasado extends Producto implements Comestible {
+public class ProductoEnvasado extends Producto implements Comestible, Descuento {
     TipoEnvase tipoEnvase; //enum TipoEnvase (plastico, vidrio o lata)
     boolean importado;
     boolean comestible;
 
-    //Atributos específicos de los productos comestibles
+    //Atributos específicos para productos comestibles
     LocalDate fechaVencimento;
     short calorias;
+
+    //Atributos específicos para aplicar descuento
+    boolean descuentoAplicado;
+    int porcentajeDescuento;
+    double precioConDescuento;
 
     public ProductoEnvasado(String id, String nombre, String descripcion, int stock, double precio, double costo, boolean disponible, TipoEnvase tipoEnvase, boolean importado, boolean comestible) {
         super(id, nombre, descripcion, stock, precio, costo, disponible);
@@ -91,5 +97,39 @@ public class ProductoEnvasado extends Producto implements Comestible {
     @Override
     public short getCalorias() {
         return calorias;
+    }
+
+    //TODO Si estadoDelDescuento = true && porcentajeDescuento, se ejecuta setPrecioConDescuento
+    @Override
+    public void setEstadoDelDescuento(boolean estadoDelDescuento) {
+        this.descuentoAplicado = estadoDelDescuento;
+    }
+
+    @Override
+    public boolean getEstadoDelDescuento() {
+        return descuentoAplicado;
+    }
+
+    @Override
+    public void setPorcentajeDescuento(int porcentajeDescuento) {
+        this.porcentajeDescuento = porcentajeDescuento;
+    }
+
+    @Override
+    public int getPorcentajeDescuento() {
+        return porcentajeDescuento;
+    }
+
+    @Override
+    public void setPrecioConDescuento() {
+        if(descuentoAplicado && porcentajeDescuento > 0){
+            this.precioConDescuento = precio - (precio * porcentajeDescuento / 100);
+            System.out.println("Prueba precio con descuento: " + this.precioConDescuento);
+        }
+    }
+
+    @Override
+    public double getPrecioConDescuento() {
+        return precioConDescuento;
     }
 }
