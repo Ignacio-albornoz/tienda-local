@@ -2,19 +2,20 @@ package com.tiendalocal.aplicaciontienda.modelo.tienda;
 
 import com.tiendalocal.aplicaciontienda.modelo.productos.Producto;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Tienda {
     String nombre;
     int maxStock;
     double saldo;
-    HashMap<String, Producto> productos;
+    HashMap<String, ArrayList<Producto>> productos;
 
     public Tienda(String nombre, int maxStock, double saldo, HashMap<String, Producto> productos) {
         this.nombre = nombre;
         this.maxStock = maxStock;
         this.saldo = saldo;
-        this.productos = new HashMap<String, Producto>();
+        this.productos = new HashMap<String, ArrayList<Producto>>();
     }
 
     public String getNombre() {
@@ -41,11 +42,11 @@ public class Tienda {
         this.saldo = saldo;
     }
 
-    public HashMap<String, Producto> getProductos() {
+    public HashMap<String, ArrayList<Producto>> getProductos() {
         return productos;
     }
 
-    public void setProductos(HashMap<String, Producto> productos) {
+    public void setProductos(HashMap<String, ArrayList<Producto>> productos) {
         this.productos = productos;
     }
 }
