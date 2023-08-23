@@ -15,7 +15,6 @@ public class Bebida extends Producto implements Comestible, Descuento {
     LocalDate fechaVencimento;
     short calorias;
 
-
     boolean descuentoAplicado;
     int porcentajeDescuento;
     double precioConDescuento;

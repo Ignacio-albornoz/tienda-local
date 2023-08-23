@@ -1,6 +1,8 @@
 import com.tiendalocal.aplicaciontienda.modelo.productos.Bebida;
+import com.tiendalocal.aplicaciontienda.modelo.productos.Producto;
 import com.tiendalocal.aplicaciontienda.modelo.productos.ProductoEnvasado;
 import com.tiendalocal.aplicaciontienda.modelo.productos.enums.TipoEnvase;
+import com.tiendalocal.aplicaciontienda.modelo.tienda.Tienda;
 
 import java.time.LocalDate;
 
@@ -18,7 +20,35 @@ public class Main {
 
         Bebida cervezaSinAlcohol = new Bebida("KKK222", "Cerveza Patagonia Sin Alcohol", "no recomendada para consumo", 2, 399.50, 201.21, true, false, 5.7, false, false, vencimiento, (short) 450);
 
+        Tienda tiendita = new Tienda("Entropia", 15, 2500.50);
+        System.out.println("Se agrega y busca un producto");
+        tiendita.agregarProducto("Bebida", cervezaSinAlcohol);
+        Producto p = tiendita.buscarProducto("Bebida", "KKK222");
 
+        System.out.println("-------------");
+        System.out.println("Pruebas de compras");
+        //Saldo Insuficiente
+        tiendita.comprarProducto("Bebida", "KKK222", 130,205.50);
+        System.out.println("\b");
+        //Stock maximo alcanzado
+        tiendita.comprarProducto("Bebida", "KKK222", 130,1.50);
+        System.out.println("\b");
+        //Compra valida
+        tiendita.comprarProducto("Bebida", "KKK222", 4,205.50);
+        System.out.println("\b");
+        /* -------------- Despues de Comprar -------------*/
+        System.out.println("-------------- Despues de Comprar -------------");
+        //Stock
+        System.out.println("Stock actualizado: " + tiendita.getStockTotal());
+        //Saldo Caja
+        System.out.println("Saldo actualizado: " + tiendita.getSaldo());
+        //Stock del producto actualizado
+        System.out.println("Stock del producto: " + p.getStock());
+        //Precio del Producto actualizado
+        System.out.println("Costo del producto: " + p.getCosto());
+
+
+/*
         System.out.println(prdEnvasado2.getFechaVencimiento());
 
         prdEnvasado.setCalorias((short) 12);
@@ -34,6 +64,8 @@ public class Main {
         cervezaSinAlcohol.setEstadoDelDescuento(true);
         cervezaSinAlcohol.setPrecioConDescuento();
         System.out.println(cervezaSinAlcohol.getPrecioConDescuento());
+*/
+
 
 
     }

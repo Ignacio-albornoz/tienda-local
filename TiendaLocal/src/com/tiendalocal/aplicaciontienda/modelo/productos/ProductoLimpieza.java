@@ -4,8 +4,8 @@ import com.tiendalocal.aplicaciontienda.modelo.productos.enums.TipoAplicacion;
 import com.tiendalocal.aplicaciontienda.modelo.productos.interfaces.Descuento;
 
 public class ProductoLimpieza extends Producto implements Descuento {
-    TipoAplicacion tipoAplicacion;
 
+    TipoAplicacion tipoAplicacion;
     boolean descuentoAplicado;
     int porcentajeDescuento;
     double precioConDescuento;

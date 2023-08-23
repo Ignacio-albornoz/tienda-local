@@ -3,8 +3,10 @@ package com.tiendalocal.aplicaciontienda.modelo.tienda;
 import com.tiendalocal.aplicaciontienda.modelo.productos.Producto;
 import com.tiendalocal.aplicaciontienda.modelo.tienda.interfaces.ComprarProducto;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Optional;
 
 public class Tienda implements ComprarProducto {
     String nombre;
@@ -47,9 +49,41 @@ public class Tienda implements ComprarProducto {
         return productos;
     }
 
-    public void setProductos(HashMap<String, ArrayList<Producto>> productos) {
+    public void setProductos(String tipo, Producto producto) {
         this.productos = productos;
     }
+
+
+    //TODO agregar productos y agregar listas son metodos diferentes. Ver con enums de tipos y switch
+    public void agregarProducto(String tipo, Producto producto){
+        ArrayList lista = productos.get(tipo);
+
+        if(lista == null) {
+            lista = new ArrayList<Producto>();
+            productos.put(tipo, lista);
+        }
+
+        lista.add(producto);
+    }
+
+
+    public Producto buscarProducto(String tipo, String id){
+        ArrayList<Producto> lista = productos.get(tipo);
+
+        if (lista != null) {
+            for (Producto p : lista) {
+                if (p.getId().equals(id)) {
+                    System.out.println("Id de Producto: " + p.getId());
+                    System.out.println("Id Parametro: " + id);
+                    System.out.println("El producto buscado: " + p.getNombre());
+                    return p;
+                }
+            }
+        }
+        System.out.println("No se encontro producto, con id: " + id);
+        return null;
+    }
+
 
     //TODO Hacer con lambda y streams
     public int getStockTotal(){
@@ -70,18 +104,31 @@ public class Tienda implements ComprarProducto {
         double importe;
         int stockTotal = getStockTotal();
         importe = calcularImporte(cantidad, precio);
+        //Valida saldo suficiente para realizar compra
         if (!verificarSaldo(precio, cantidad, importe)){
             System.out.println("Saldo insuficiente, El producto no podrá ser agregado a la tienda");
             return;
         }
+        //Valida se haya alcanzado el stock maximo
         if (!verificarStockMaximo(stockTotal, cantidad)){
             System.out.println("Stock Maximo alcanzado");
             return;
         }
 
-        /* AQUI DEBERIA AGREGARSE EL PRODUCTO O MODIFICARSE */
+        //Luego de validar, saldo y stock se busca el Producto por id
+        Producto producto = buscarProducto(tipo, id);
 
-        restarImporte(saldo, importe);
+        //Se evalua si el producto existe
+        if (producto == null) {
+            System.out.println("No se encontro el producto con id: " + id);
+        } else {
+            //Se modifican los atributos stock y precio
+            System.out.println("Se encontro el producto, se realizara la actualizacion");
+            producto.setStock(producto.getStock() + cantidad);
+            producto.setCosto(precio);
+            //Se actualiza el saldo
+            restarImporte(saldo, importe);
+        }
 
     }
 
