@@ -14,7 +14,7 @@ public class Main {
 
         ProductoEnvasado prdEnvasado = new ProductoEnvasado("AAA123", "Vela aromatica en envase de plastico", "vela aromatica en envase poco seguro y convencional", 3, 69.99, 39.99, true, TipoEnvase.PLASTICO ,false, false);
 
-        ProductoEnvasado prdEnvasado2 = new ProductoEnvasado("AAA124", "Vela aromatica en envase de vidrio comestible", "vela aromatica en envase poco seguro, convencional y muy rica", 1, 49.99, 39.99, true, TipoEnvase.PLASTICO ,false, true, vencimiento , (short) 1287);
+        ProductoEnvasado prdEnvasado2 = new ProductoEnvasado("AAA124", "Vela aromatica en envase de vidrio comestible", "vela aromatica en envase poco seguro, convencional y muy rica", 12, 49.99, 39.99, true, TipoEnvase.PLASTICO ,false, true, vencimiento , (short) 1287);
 
         Bebida cerveza = new Bebida("KKK222", "Cerveza Patagonia", "cerveza realizada en algun lugar", 2, 399.50, 201.21, true, true, 5.7, false, true, vencimiento, (short) 450);
 
@@ -22,6 +22,7 @@ public class Main {
 
         Tienda tiendita = new Tienda("Entropia", 15, 2500.50);
         System.out.println("Se agrega y busca un producto");
+        tiendita.agregarProducto("Envasado",prdEnvasado2);
         tiendita.agregarProducto("Bebida", cervezaSinAlcohol);
         Producto p = tiendita.buscarProducto("Bebida", "KKK222");
 
