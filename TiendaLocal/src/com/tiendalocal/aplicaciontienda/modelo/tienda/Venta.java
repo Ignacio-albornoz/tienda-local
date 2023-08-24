@@ -12,8 +12,8 @@ public class Venta {
     HashMap<Producto, Integer> carrito = new HashMap<>();
     double precioTotal;
 
-    public Venta(double precioTotal) {
-        this.precioTotal = precioTotal;
+    public Venta() {
+        this.precioTotal = 0;
         this.carrito = new HashMap<Producto, Integer>();
     }
 
@@ -29,57 +29,75 @@ public class Venta {
         if (cantidad > 0 && cantidad <= CANTIDAD_MAXIMA_DE_PRODUCTOS){
             return true;
         }
-        System.out.println("Se agrego una cantidad de prodcutos no valida. \bRecuerda no se pueden agregar mas de " + CANTIDAD_MAXIMA_DE_PRODUCTOS + "productos iguales");
+        System.out.println("Se agrego una cantidad de productos no valida. Recuerda agregar menos de " + CANTIDAD_MAXIMA_DE_PRODUCTOS + " productos iguales");
         return false;
     }
 
     public boolean validarCantidadDeProductosEnElCarrito(){
-        if (carrito.size() <= 3){
+        if (carrito.size() <= 2){
             return true;
         }
-        System.out.println("Se llego al limite de productos en el carrito. \bRecuerda el limite de productos es: " + CANTIDAD_MAXIMA_DE_PRODUCTOS_EN_CARRITO);
+        System.out.println("Se llego al limite de productos en el carrito. \n¡Recuerda el limite de productos es: " + CANTIDAD_MAXIMA_DE_PRODUCTOS_EN_CARRITO + "!");
         return false;
     }
 
-    public boolean validarStock(int cantidad){
-
+    public double calcularImporte(int cantidad, double precioDelProducto){
+        return cantidad * precioDelProducto;
     }
 
     public void agregarProductoAlCarrito(Producto producto, int cantidad){
-        if (!validarCantidad(cantidad)){
-            return;
-        }
+        System.out.println("\n");
+        System.out.println("Nueva venta:");
+        double importe;
+        boolean cantidadDeProductosCorrecta = true;
+        boolean cantidadDeProductosEnElCarritoCorrecta = true;
+        boolean productoDisponible = true;
 
-        if (!validarCantidadDeProductosEnElCarrito()){
-            return;
-        }
-
+        //Se verifica el producto este disponible
         if (!producto.isDisponible()){
-            System.out.println("El producto:\b" + "id: " + producto.getId() + ", Nobre: "+ producto.getNombre() + " no se encuentra disponible");
+            System.out.println("El producto: " + producto.getNombre() + " no se encuentra disponible!");
             return;
         }
 
-        //Producto Disponible
-        if (producto.isDisponible()){
-            //Validar Stock
-            if (cantidad <= producto.getStock()){
-                //TODO revisar
-                if (carrito.size() <= 3 ){
-                    carrito.put(producto, cantidad);
-                    double importe = cantidad * producto.getPrecio();
-                    precioTotal += importe;
-                }
-                else {
-                    System.out.println("Su carrito esta lleno!");
-                }
+        //Se verifica la cantidad obtenida por parametros, sea valida
+        if (!validarCantidad(cantidad)){
+            cantidadDeProductosCorrecta = false;
+        }
 
-            } else {
-                System.out.println("El producto:\b" + "id: " + producto.getId() + ", Nobre: "+ producto.getNombre() + " tiene stock disponible menor al solicitado");
-                carrito.put(producto, producto.getStock());
-            }
+        //Se verifica la cantidad de productos en el carro se valida
+        if (!validarCantidadDeProductosEnElCarrito()){
+            cantidadDeProductosEnElCarritoCorrecta = false;
+        }
 
+
+        if (!cantidadDeProductosCorrecta || !cantidadDeProductosEnElCarritoCorrecta){
+            return;
+        }
+
+        //Se verifica si la cantidad es menor, mayor o igual al stock del producto
+        if (cantidad <= producto.getStock()){
+            //Se calcula el importe
+            importe = calcularImporte(cantidad, producto.getPrecio());
+
+            //Se agrega el producto al carrito
+            carrito.put(producto, cantidad);
+
+            //Se suma el importe al precio total
+            precioTotal += importe;
+
+            System.out.println("El producto " + producto.getNombre() + " se agrego al carrito!");
         } else {
-            System.out.println("El producto:\b" + "id: " + producto.getId() + ", Nobre: "+ producto.getNombre() + " no se encuentra disponible");
+            //Se agrega la cantidad de stock disponible
+            carrito.put(producto, producto.getStock());
+
+            //Se calcula el importe
+            importe = calcularImporte(producto.getStock(), producto.getPrecio());
+
+            //Se suma el importe al precio total
+            precioTotal += importe;
+
+            System.out.println("El producto " + producto.getNombre()  + ", ID: "+ producto.getId() + "\nTiene stock disponible menor al solicitado");
+            System.out.println("Se agregaron: " + producto.getStock() + " unidades de " + producto.getNombre());
         }
 
     }
