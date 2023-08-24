@@ -40,17 +40,6 @@ public class Bebida extends Producto implements Comestible, Descuento {
         }
     }
 
-    //Constructor que define comestible = true por defecto y no necesita recibir dicho valor por parametro
-    public Bebida(String id, String nombre, String descripcion, int stock, double precio, double costo, boolean comestible, boolean contieneAlcohol, double graduacionAlcoholica, boolean importado, LocalDate fechaVencimento, short calorias) {
-        super(id, nombre, descripcion, stock, precio, costo);
-        this.contieneAlcohol = contieneAlcohol;
-        this.graduacionAlcoholica = graduacionAlcoholica;
-        this.importado = importado;
-        this.comestible = comestible;
-        this.fechaVencimento = fechaVencimento;
-        this.calorias = calorias;
-    }
-
     public boolean isContieneAlcohol() {
         return contieneAlcohol;
     }

@@ -8,7 +8,6 @@ public class ListaProductos {
     public Producto obtenerProductoPorId(String id) {
         Producto producto = listaProductos.get(id);
         if (producto != null){
-            System.out.println("Se encontro el producto " + producto.getNombre());
             return producto;
         }
         System.out.println("El producto con id: " + id + " NO se encontro");

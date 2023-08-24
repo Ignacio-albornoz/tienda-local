@@ -20,15 +20,16 @@ public class ProductoEnvasado extends Producto implements Comestible, Descuento 
     int porcentajeDescuento;
     double precioConDescuento;
 
-    public ProductoEnvasado(String id, String nombre, String descripcion, int stock, double precio, double costo, boolean disponible, TipoEnvase tipoEnvase, boolean importado, boolean comestible) {
-        super(id, nombre, descripcion, stock, precio, costo, disponible);
+    public ProductoEnvasado(String id, String nombre, String descripcion, int stock, double precio, double costo, TipoEnvase tipoEnvase, boolean importado) {
+        super(id, nombre, descripcion, stock, precio, costo);
         this.tipoEnvase = tipoEnvase;
         this.importado = importado;
         this.comestible = comestible;
     }
 
-    public ProductoEnvasado(String id, String nombre, String descripcion, int stock, double precio, double costo, boolean disponible, TipoEnvase tipoEnvase, boolean importado, boolean comestible, LocalDate fechaVencimento, short calorias) {
-        super(id, nombre, descripcion, stock, precio, costo, disponible);
+    //Constructor para Productos comestibles
+    public ProductoEnvasado(String id, String nombre, String descripcion, int stock, double precio, double costo, TipoEnvase tipoEnvase, boolean importado, boolean comestible, LocalDate fechaVencimento, short calorias) {
+        super(id, nombre, descripcion, stock, precio, costo);
         this.tipoEnvase = tipoEnvase;
         this.importado = importado;
         this.comestible = comestible;
@@ -66,8 +67,7 @@ public class ProductoEnvasado extends Producto implements Comestible, Descuento 
     }
 
 
-    //Metodos sobrescritos de la interfaz Comestible
-
+    //Metodos sobrescritos de interfaz Comestible
     @Override
     public void setFechaVencimiento(LocalDate fechaVencimiento) {
         //Validamos que el producto sea comestible

@@ -1,5 +1,6 @@
 package com.tiendalocal.aplicaciontienda.modelo.tienda;
 
+import com.tiendalocal.aplicaciontienda.modelo.productos.ListaProductos;
 import com.tiendalocal.aplicaciontienda.modelo.productos.Producto;
 
 import java.util.ArrayList;
@@ -9,12 +10,12 @@ import java.util.Map;
 public class Venta {
     final int CANTIDAD_MAXIMA_DE_PRODUCTOS = 10;
     final int CANTIDAD_MAXIMA_DE_PRODUCTOS_EN_CARRITO = 3;
-    HashMap<Producto, Integer> carrito = new HashMap<>();
+    HashMap<String, Integer> carrito = new HashMap<>();
     double precioTotal;
 
     public Venta() {
         this.precioTotal = 0;
-        this.carrito = new HashMap<Producto, Integer>();
+        this.carrito = new HashMap<String, Integer>();
     }
 
     public double getPrecioTotal() {
@@ -51,7 +52,7 @@ public class Venta {
         double importe;
         boolean cantidadDeProductosCorrecta = true;
         boolean cantidadDeProductosEnElCarritoCorrecta = true;
-        boolean productoDisponible = true;
+
 
         //Se verifica el producto este disponible
         if (!producto.isDisponible()){
@@ -80,7 +81,7 @@ public class Venta {
             importe = calcularImporte(cantidad, producto.getPrecio());
 
             //Se agrega el producto al carrito
-            carrito.put(producto, cantidad);
+            carrito.put(producto.getId(), cantidad);
 
             //Se suma el importe al precio total
             precioTotal += importe;
@@ -88,7 +89,7 @@ public class Venta {
             System.out.println("El producto " + producto.getNombre() + " se agrego al carrito!");
         } else {
             //Se agrega la cantidad de stock disponible
-            carrito.put(producto, producto.getStock());
+            carrito.put(producto.getId(), producto.getStock());
 
             //Se calcula el importe
             importe = calcularImporte(producto.getStock(), producto.getPrecio());
@@ -102,13 +103,39 @@ public class Venta {
 
     }
 
-    public void finalizarCompra(Tienda tienda){
-        tienda.sumarSaldoPorVenta(precioTotal);
-        
 
+    public void finalizarCompra(Tienda tienda, ListaProductos listaProductos){
+        //Se imprime el detalle antes de finalizar la compra
+        imprimirDetalle(listaProductos);
+        //Se suma la venta total al saldo
+        tienda.sumarSaldoPorVenta(precioTotal);
+
+        //Se buscan los productos que deben ser actualizados
+        carrito.forEach((id, cantidad) -> {
+            listaProductos.restarStock(id, cantidad);
+        });
+
+        //Se vacia el carrito
+        limpiarCarrito();
+        //Precio total igual 0
+        precioTotal = 0;
     }
 
-    public void imprimirDetalle(){
+    public void limpiarCarrito(){
+        carrito.clear();
+    }
+
+    public void imprimirDetalle(ListaProductos listaProductos){
+        if (carrito.size() == 0){
+            System.out.println("Su carrito esta vacio!");
+            return;
+        }
+
+        carrito.forEach((id, cantidad) -> {
+            Producto producto = listaProductos.obtenerProductoPorId(id);
+            System.out.println(producto.getId() + " " + producto.getNombre() + " " + cantidad + " x $" + producto.getPrecio() + " = $" + ( cantidad * producto.getPrecio()));
+        });
+        System.out.println("TOTAL VENTA: $" + precioTotal);
 
     }
 }

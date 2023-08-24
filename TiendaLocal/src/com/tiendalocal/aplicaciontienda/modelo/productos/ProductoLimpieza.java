@@ -11,7 +11,7 @@ public class ProductoLimpieza extends Producto implements Descuento {
     double precioConDescuento;
 
     public ProductoLimpieza(String id, String nombre, String descripcion, int stock, double precio, double costo, boolean disponible, TipoAplicacion tipoAplicacion) {
-        super(id, nombre, descripcion, stock, precio, costo, disponible);
+        super(id, nombre, descripcion, stock, precio, costo);
         this.tipoAplicacion = tipoAplicacion;
     }
 
