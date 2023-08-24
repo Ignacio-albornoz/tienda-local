@@ -20,8 +20,8 @@ public class Bebida extends Producto implements Comestible, Descuento {
     double precioConDescuento;
 
     //TODO analizar verificacion, si contieneAlcohol = true && graduacionAlcoholica <= 0, significa contieneAlcohol = false?
-    public Bebida(String id, String nombre, String descripcion, int stock, double precio, double costo, boolean disponible, boolean contieneAlcohol, double graduacionAlcoholica, boolean importado, boolean comestible, LocalDate fechaVencimento, short calorias) {
-        super(id, nombre, descripcion, stock, precio, costo, disponible);
+    public Bebida(String id, String nombre, String descripcion, int stock, double precio, double costo, boolean contieneAlcohol, double graduacionAlcoholica, boolean importado, boolean comestible, LocalDate fechaVencimento, short calorias) {
+        super(id, nombre, descripcion, stock, precio, costo);
         this.contieneAlcohol = contieneAlcohol;
         //Si contieneAlcohol = true, se le asigna la graduacion
         if (contieneAlcohol){
@@ -41,12 +41,12 @@ public class Bebida extends Producto implements Comestible, Descuento {
     }
 
     //Constructor que define comestible = true por defecto y no necesita recibir dicho valor por parametro
-    public Bebida(String id, String nombre, String descripcion, int stock, double precio, double costo, boolean disponible, boolean contieneAlcohol, double graduacionAlcoholica, boolean importado, LocalDate fechaVencimento, short calorias) {
-        super(id, nombre, descripcion, stock, precio, costo, disponible);
+    public Bebida(String id, String nombre, String descripcion, int stock, double precio, double costo, boolean comestible, boolean contieneAlcohol, double graduacionAlcoholica, boolean importado, LocalDate fechaVencimento, short calorias) {
+        super(id, nombre, descripcion, stock, precio, costo);
         this.contieneAlcohol = contieneAlcohol;
         this.graduacionAlcoholica = graduacionAlcoholica;
         this.importado = importado;
-        this.comestible = true;
+        this.comestible = comestible;
         this.fechaVencimento = fechaVencimento;
         this.calorias = calorias;
     }

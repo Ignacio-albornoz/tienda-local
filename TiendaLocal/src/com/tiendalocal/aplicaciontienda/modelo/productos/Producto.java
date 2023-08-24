@@ -11,14 +11,14 @@ public abstract class Producto {
     double costo;
     boolean disponible;
 
-    public Producto(String id, String nombre, String descripcion, int stock, double precio, double costo, boolean disponible) {
+    public Producto(String id, String nombre, String descripcion, int stock, double precio, double costo) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.stock = stock;
         this.precio = precio;
         this.costo = costo;
-        this.disponible = disponible;
+        this.disponible = true;
     }
 
     public String getId() {
