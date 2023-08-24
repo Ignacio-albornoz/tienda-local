@@ -102,6 +102,12 @@ public class Venta {
 
     }
 
+    public void finalizarCompra(Tienda tienda){
+        tienda.sumarSaldoPorVenta(precioTotal);
+        
+
+    }
+
     public void imprimirDetalle(){
 
     }

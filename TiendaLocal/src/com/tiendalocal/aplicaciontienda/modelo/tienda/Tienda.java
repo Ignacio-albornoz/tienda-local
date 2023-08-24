@@ -84,6 +84,10 @@ public class Tienda implements ComprarProducto {
         return null;
     }
 
+    public void sumarSaldoPorVenta(double saldoTotalDeVenta){
+        saldo += saldoTotalDeVenta;
+    }
+
 
     //TODO Hacer con lambda y streams
     public int getStockTotal(){
