@@ -1,4 +1,5 @@
 import com.tiendalocal.aplicaciontienda.modelo.productos.Bebida;
+import com.tiendalocal.aplicaciontienda.modelo.productos.ListaProductos;
 import com.tiendalocal.aplicaciontienda.modelo.productos.Producto;
 import com.tiendalocal.aplicaciontienda.modelo.productos.ProductoEnvasado;
 import com.tiendalocal.aplicaciontienda.modelo.productos.enums.TipoEnvase;
@@ -26,6 +27,27 @@ public class Main {
         tiendita.agregarProducto("Bebida", cervezaSinAlcohol);
         Producto p = tiendita.buscarProducto("Bebida", "KKK222");
 
+        ListaProductos lista = new ListaProductos();
+        lista.agregarProducto(cerveza);
+        Producto productoBuscadoPorId = lista.obtenerProductoPorId(cerveza.getId());
+        System.out.println(productoBuscadoPorId.getNombre());
+        System.out.println();
+        lista.agregarProducto(cervezaSinAlcohol);
+        System.out.println(productoBuscadoPorId.getNombre());
+        lista.modificiarProducto(cervezaSinAlcohol);
+        Producto productoBuscadoPorId2 = lista.obtenerProductoPorId(cerveza.getId());
+        System.out.println(productoBuscadoPorId2.getNombre());
+        lista.modificarPrecio(productoBuscadoPorId2.getId(), 25.25);
+        System.out.println(productoBuscadoPorId2.getPrecio());
+        Producto product = lista.obtenerProductoPorId(productoBuscadoPorId2.getId());
+        product.getPrecio();
+        System.out.println(product.getPrecio());
+
+        //Cerveza no cambia, cambia en la lista
+        System.out.println(cervezaSinAlcohol.getPrecio());
+        lista.agregarProducto(prdEnvasado);
+
+        /*
         System.out.println("-------------");
         System.out.println("Pruebas de compras");
         //Saldo Insuficiente
@@ -38,6 +60,7 @@ public class Main {
         tiendita.comprarProducto("Bebida", "KKK222", 4,205.50);
         System.out.println("\b");
         /* -------------- Despues de Comprar -------------*/
+        /*
         System.out.println("-------------- Despues de Comprar -------------");
         //Stock
         System.out.println("Stock actualizado: " + tiendita.getStockTotal());
@@ -47,6 +70,8 @@ public class Main {
         System.out.println("Stock del producto: " + p.getStock());
         //Precio del Producto actualizado
         System.out.println("Costo del producto: " + p.getCosto());
+
+*/
 
 
 /*
