@@ -1,24 +1,26 @@
 package com.tiendalocal.aplicaciontienda.modelo.tienda;
 
-import com.tiendalocal.aplicaciontienda.modelo.productos.Producto;
+import com.tiendalocal.aplicaciontienda.modelo.productos.*;
+import com.tiendalocal.aplicaciontienda.modelo.tienda.enums.TipoProducto;
 import com.tiendalocal.aplicaciontienda.modelo.tienda.interfaces.ComprarProducto;
 
-import java.sql.SQLOutput;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Optional;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 
 public class Tienda implements ComprarProducto {
     String nombre;
     int maxStock;
     double saldo;
-    HashMap<String, ArrayList<Producto>> productos;
+    TipoProducto tipoProducto;
+    HashMap<String, TipoProducto> productos;
 
     public Tienda(String nombre, int maxStock, double saldo) {
         this.nombre = nombre;
         this.maxStock = maxStock;
         this.saldo = saldo;
-        this.productos = new HashMap<String, ArrayList<Producto>>();
+        this.productos = new HashMap<String, TipoProducto>();
     }
 
     public String getNombre() {
@@ -45,68 +47,77 @@ public class Tienda implements ComprarProducto {
         this.saldo = saldo;
     }
 
-    public HashMap<String, ArrayList<Producto>> getProductos() {
-        return productos;
-    }
-
-    public void setProductos(String tipo, Producto producto) {
-        this.productos = productos;
-    }
 
 
-    //TODO agregar productos y agregar listas son metodos diferentes. Ver con enums de tipos y switch
-    public void agregarProducto(String tipo, Producto producto){
-        ArrayList lista = productos.get(tipo);
+    public void agregarProducto(String id, ListaProductos listaProductos){
+        Producto producto = listaProductos.obtenerProductoPorId(id);
 
-        if(lista == null) {
-            lista = new ArrayList<Producto>();
-            productos.put(tipo, lista);
+        if (producto instanceof ProductoEnvasado){
+            productos.put(id, tipoProducto.ENVASADO);
+            return;
         }
 
-        lista.add(producto);
+        if (producto instanceof Bebida){
+            productos.put(id, tipoProducto.BEBIDA);
+            return;
+        }
+
+        if (producto instanceof ProductoLimpieza){
+            productos.put(id, tipoProducto.LIMPIEZA);
+        }
     }
 
+    public Stream<String> obtenerIdsDeProductosPorTipo(TipoProducto tipo) {
+        //Creamos un stream de ids que contengan el mismo tipo de producto
+        Stream<String> ids = productos.entrySet().stream()
+                .filter(e -> e.getValue() == tipo)
+                .map(Map.Entry::getKey);
+        // Mostramos cada clave en la consola usando forEach
+        ids.forEach(System.out::println);
 
-    public Producto buscarProducto(String tipo, String id){
-        ArrayList<Producto> lista = productos.get(tipo);
+        return ids;
+    }
 
-        if (lista != null) {
-            for (Producto p : lista) {
-                if (p.getId().equals(id)) {
-                    System.out.println("Id de Producto: " + p.getId());
-                    System.out.println("Id Parametro: " + id);
-                    System.out.println("El producto buscado: " + p.getNombre());
-                    return p;
-                }
+    public void obtenerListaDeObjetosEnProductos(TipoProducto tipo, ListaProductos listaProductos) {
+        Stream<String> keys = productos.entrySet().stream()
+                .filter(e -> e.getValue() == tipo)
+                .map(Map.Entry::getKey);
+        System.out.println("------------Lista de Productos en Tienda de tipo: " + tipo + " ---------\n");
+        //Mostramos los productos disponibles en Tienda con mayor detalle
+        keys.forEach((id) -> {
+            Producto p = listaProductos.obtenerProductoPorId(id);
+            if (p != null){
+                System.out.println(p.getNombre() + " " + p.getId());
             }
-        }
-        System.out.println("No se encontro producto, con id: " + id);
-        return null;
+        });
     }
+
 
     public void sumarSaldoPorVenta(double saldoTotalDeVenta){
         saldo += saldoTotalDeVenta;
     }
 
+    public int getStockTotal(ListaProductos listaProductos){
 
-    //TODO Hacer con lambda y streams
-    public int getStockTotal(){
-        int stock = 0;
-
-        for (String tipo : productos.keySet()) {
-            ArrayList<Producto> lista = productos.get(tipo);
-            for(Producto p : lista) {
-                stock += p.getStock();
+        AtomicInteger stock = new AtomicInteger();
+        productos.forEach((id, tipo) -> {
+            Integer productoStock = listaProductos.obtenerStock(id);
+            if (productoStock != null){
+                stock.addAndGet(productoStock);
+            } else {
+                return;
             }
-        }
-        return stock;
+        });
+
+        return stock.get();
     }
 
 
     @Override
-    public void comprarProducto(String tipo, String id, int cantidad, double precio) {
+    public void comprarProducto(String id, int cantidad, double precio, ListaProductos listaProductos) {
         double importe;
-        int stockTotal = getStockTotal();
+        int stockTotal = getStockTotal(listaProductos);
+
         importe = calcularImporte(cantidad, precio);
         //Valida saldo suficiente para realizar compra
         if (!verificarSaldo(precio, cantidad, importe)){
@@ -120,7 +131,7 @@ public class Tienda implements ComprarProducto {
         }
 
         //Luego de validar, saldo y stock se busca el Producto por id
-        Producto producto = buscarProducto(tipo, id);
+        Producto producto = listaProductos.obtenerProductoPorId(id);
 
         //Se evalua si el producto existe
         if (producto == null) {

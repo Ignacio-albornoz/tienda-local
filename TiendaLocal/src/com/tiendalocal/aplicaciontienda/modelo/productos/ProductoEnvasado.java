@@ -24,7 +24,7 @@ public class ProductoEnvasado extends Producto implements Comestible, Descuento 
         super(id, nombre, descripcion, stock, precio, costo);
         this.tipoEnvase = tipoEnvase;
         this.importado = importado;
-        this.comestible = comestible;
+        this.comestible = false;
     }
 
     //Constructor para Productos comestibles

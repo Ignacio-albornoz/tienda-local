@@ -14,6 +14,7 @@ public class ListaProductos {
         return null;
     }
 
+
     public void agregarProducto(Producto producto){
         Producto p = listaProductos.get(producto.getId());
         if (p == null){
@@ -49,6 +50,15 @@ public class ListaProductos {
     public void restarStock(String id, int stock){
         Producto p = obtenerProductoPorId(id);
         p.setStock(p.getStock() - stock);
+    }
+
+    public Integer obtenerStock(String id){
+        Producto producto = listaProductos.get(id);
+        if (producto != null){
+            return producto.getStock();
+        }
+        System.out.println("El producto con id: " + id + " NO se encontro");
+        return null;
     }
 
 
