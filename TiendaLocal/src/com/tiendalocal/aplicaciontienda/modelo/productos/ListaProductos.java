@@ -1,5 +1,6 @@
 package com.tiendalocal.aplicaciontienda.modelo.productos;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.stream.Stream;
 
@@ -72,6 +73,54 @@ public class ListaProductos {
         streamFiltrado.forEach(k -> {
             System.out.println("Este producto necesita ser modificado para poder ser vendido\n");
             System.out.println(k.toString());
+        });
+    }
+
+    public void obtenerComestibleConMenorDescuento(int porcentajeDescuento){
+        Stream<Producto> streamProductos = listaProductos.values().stream();
+
+        //Se incluyen solo los productos que tengan un descuento menor que el porcentaje dado
+        Stream<Producto> streamFiltradoPorPorcentajeDescuento = streamProductos.filter(p -> p.getPorcentajeDescuento() < porcentajeDescuento);
+
+        Stream<Producto> streamProductos2 = listaProductos.values().stream();
+
+        //Se incluyen solo los productos que tengan un descuento menor que el porcentaje dado
+        Stream<Producto> streamFiltradoPorPorcentajeDescuento2 = streamProductos2.filter(p -> p.getPorcentajeDescuento() < porcentajeDescuento);
+
+
+        //Se filtra el stream por la clase Bebida y se hace un cast a Bebida
+        Stream<ProductoEnvasado> streamFiltradoClaseEnvasados = streamFiltradoPorPorcentajeDescuento2.filter(producto -> producto instanceof ProductoEnvasado).map(producto -> (ProductoEnvasado) producto);
+
+        Stream<ProductoEnvasado> streamFiltradoComestibleEnvasado = streamFiltradoClaseEnvasados.filter(envasado -> envasado.comestible);
+
+        Stream<ProductoEnvasado> streamEnvdadosOrdenadoPrecio = streamFiltradoComestibleEnvasado.sorted(Comparator.comparingDouble(envasado -> envasado.precio));
+
+
+        //Filtros para Bebidas
+        Stream<Bebida> streamFiltradoClaseBebida = streamFiltradoPorPorcentajeDescuento.filter(producto -> producto instanceof Bebida).map(producto -> (Bebida) producto);
+
+        Stream<Bebida> streamFiltradoImportado = streamFiltradoClaseBebida.filter(bebida -> !bebida.importado);
+
+        Stream<Bebida> streamFiltradoComestibleBebida = streamFiltradoImportado.filter(bebida -> bebida.comestible == true);
+
+
+        Stream<Bebida> streamBebidasOrdenadoPrecio = streamFiltradoComestibleBebida.sorted(Comparator.comparingDouble(bebida -> bebida.precio));
+
+        System.out.println("\n-------------------Bebidas, comestibles y no importadas con menor descuento a: " + porcentajeDescuento + "% -------------------\n");
+
+        streamBebidasOrdenadoPrecio.forEach(bebida -> {
+            System.out.println("Producto " + bebida.nombre + " " + bebida.descripcion.toUpperCase() + ", $" + bebida.precio + ", comestible: " + bebida.comestible + " importado: " + bebida.importado + ", descuento: " + bebida.porcentajeDescuento + "%\n");
+        });
+
+        System.out.println("-------------------Productos Envasados, comestibles con menor descuento a: " + porcentajeDescuento + "% -------------------\n");
+
+
+
+
+
+        streamEnvdadosOrdenadoPrecio.forEach(envasado -> {
+            System.out.println("Producto " + envasado.nombre + " " + envasado.descripcion.toUpperCase() + ", $" + envasado.precio + ", comestible: " + envasado.comestible + ", descuento: " + envasado.porcentajeDescuento + "%\n");
+
         });
     }
 

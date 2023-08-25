@@ -34,7 +34,7 @@ public class Main {
         Bebida jugoNaranja = new Bebida("BBB222", "Jugo de Naranja Cepita", "fuente de vitamina C", 1, 59.90, 20.00, false, 0, true, true, vencimiento4, (short) 200);
         ProductoLimpieza detergente = new ProductoLimpieza("CCC333", "Detergente Magistral", "limpia y desinfecta", 2, 149.90, 100.00, true, TipoAplicacion.COCINA);
         ProductoEnvasado arroz = new ProductoEnvasado("DDD444", "Arroz Gallo Oro", "sin TACC", 3, 79.90, 40.00, TipoEnvase.PLASTICO, false, true, vencimiento, (short) 1000);
-        Bebida leche = new Bebida("EEE555", "Leche La Serenísima", "contiene calcio y proteínas", 1, 89.90, 30.00, true, 1.0, true, false, vencimiento, (short) 250);
+        Bebida leche = new Bebida("EEE555", "Leche La Serenísima", "contiene calcio y proteínas", 1, 89.90, 30.00, true, 1.0, false, true, vencimiento, (short) 250);
         ProductoLimpieza jabon = new ProductoLimpieza("FFF666", "Jabón Dove", "cuida tu piel", 2, 69.90, 35.00, false, TipoAplicacion.MULTIUSO);
         ProductoEnvasado fideos = new ProductoEnvasado("GGG777", "Fideos Matarazzo", "contiene gluten", 3 ,99.90 ,45.00 , TipoEnvase.LATA ,false , true ,vencimiento ,(short)500);
         Bebida aguaMineral = new Bebida("HHH888", "Agua Mineral Villavicencio", "sin gas y sin sodio",1 ,49.90 ,15.00 ,false ,2.0 ,false ,false ,vencimiento ,(short)2000);
@@ -145,6 +145,8 @@ public class Main {
         double resu = leche.calcularImpuesto(leche.getPrecio());
 
         System.out.println(resu);
+
+        listaProductos.obtenerComestibleConMenorDescuento(25);
 
 /*
         System.out.println(prdEnvasado2.getFechaVencimiento());
