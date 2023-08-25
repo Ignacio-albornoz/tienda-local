@@ -2,10 +2,12 @@ package com.tiendalocal.aplicaciontienda.modelo.productos;
 
 import com.tiendalocal.aplicaciontienda.modelo.productos.interfaces.Comestible;
 import com.tiendalocal.aplicaciontienda.modelo.productos.interfaces.Ganancia;
+import com.tiendalocal.aplicaciontienda.modelo.productos.interfaces.Impuesto;
 
 import java.time.LocalDate;
 
-public class Bebida extends Producto implements Comestible, Ganancia {
+public class Bebida extends Producto implements Comestible, Ganancia, Impuesto {
+    final int IMPUESTOS_A_IMPORTADOS = 10;
     final int DESCUENTO_MAXIMO = 15;
     boolean contieneAlcohol;
     double graduacionAlcoholica;
@@ -185,5 +187,14 @@ public class Bebida extends Producto implements Comestible, Ganancia {
                 ", porcentajeDescuento=" + porcentajeDescuento +
                 ", precioConDescuento=" + precioConDescuento +
                 '}';
+    }
+
+    @Override
+    public double calcularImpuesto(double precioVenta) {
+        if (importado){
+            double impuesto = (precio * IMPUESTOS_A_IMPORTADOS / 100);
+            return precio + impuesto;
+        }
+        return precio;
     }
 }

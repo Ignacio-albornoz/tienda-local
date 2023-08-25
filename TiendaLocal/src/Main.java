@@ -20,7 +20,7 @@ public class Main {
 
         ProductoEnvasado prdEnvasado = new ProductoEnvasado("AAA123", "Vela aromatica en envase de plastico", "vela aromatica en envase poco seguro y convencional", 3, 69.99, 39.99,  TipoEnvase.PLASTICO ,false);
 
-        ProductoEnvasado prdEnvasado2 = new ProductoEnvasado("AAA124", "Vela aromatica en envase de vidrio comestible", "vela aromatica en envase poco seguro, convencional y muy rica", 12, 49.99, 39.99, TipoEnvase.PLASTICO ,false, true, vencimiento2 , (short) 1287);
+        ProductoEnvasado prdEnvasado2 = new ProductoEnvasado("AAA124", "Vela aromatica en envase de vidrio comestible", "vela aromatica en envase poco seguro, convencional y muy rica", 12, 43.99, 39.99, TipoEnvase.PLASTICO ,false, true, vencimiento2 , (short) 1287);
 
         Bebida cerveza = new Bebida("KKK223", "Cerveza Patagonia", "cerveza realizada en algun lugar", 2, 399.50, 201.21, true, 5.7,true, false, vencimiento1, (short) 450);
 
@@ -141,6 +141,10 @@ public class Main {
 
         System.out.println("\n----------- Detalle Post Compra ------------\n");
         venta1.imprimirDetalle(listaProductos);
+
+        double resu = leche.calcularImpuesto(leche.getPrecio());
+
+        System.out.println(resu);
 
 /*
         System.out.println(prdEnvasado2.getFechaVencimiento());
