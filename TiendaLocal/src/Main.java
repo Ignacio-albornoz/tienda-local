@@ -6,6 +6,7 @@ import com.tiendalocal.aplicaciontienda.modelo.tienda.Venta;
 import com.tiendalocal.aplicaciontienda.modelo.tienda.enums.TipoProducto;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.stream.Stream;
 
 public class Main {
@@ -148,6 +149,14 @@ public class Main {
 
         listaProductos.obtenerComestibleConMenorDescuento(25);
 
+        List<Producto> listaUtilidadesBajas = listaProductos.listarProductosConUtilidadesInferiores(25);
+
+        listaUtilidadesBajas.stream().forEach(producto -> {
+            System.out.println("ID: " + producto.getId());
+            System.out.println("Descripcion: " + producto.getDescripcion());
+            System.out.println("Cantidad en stock: " + producto.getStock());
+            System.out.println("------------------------");
+        });
 /*
         System.out.println(prdEnvasado2.getFechaVencimiento());
 

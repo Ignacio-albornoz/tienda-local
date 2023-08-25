@@ -2,6 +2,8 @@ package com.tiendalocal.aplicaciontienda.modelo.productos;
 
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class ListaProductos {
@@ -124,5 +126,16 @@ public class ListaProductos {
         });
     }
 
+    public List<Producto> listarProductosConUtilidadesInferiores(double porcentaje_utilidad) {
+        //Se crea un stream de la lista o el mapa de productos
+        Stream<Producto> streamProductos = listaProductos.values().stream();
+
+        //Se filtra el stream usando el método calcularGanancia de la interfaz Precio
+        //Se incluyen solo los productos que tengan una ganancia menor que el porcentaje dado
+        Stream<Producto> streamFiltrado = streamProductos.filter(p -> p.calcularGanancia(p.getCosto(), p.getPrecio()) < porcentaje_utilidad);
+
+        //Se convierte el stream filtrado en una lista y se devuelve como resultado
+        return streamFiltrado.collect(Collectors.toList());
+    }
 
 }
