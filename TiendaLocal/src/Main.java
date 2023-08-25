@@ -58,7 +58,7 @@ public class Main {
 
 
 
-        Tienda tiendita = new Tienda("Entropia", 25, 12500.50);
+        Tienda tiendita = new Tienda("Entropia", 50, 12500.50);
         System.out.println("");
         System.out.println("");
         tiendita.agregarProducto("AAA124", listaProductos);

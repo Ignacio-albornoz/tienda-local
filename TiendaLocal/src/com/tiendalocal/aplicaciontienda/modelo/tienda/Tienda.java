@@ -116,26 +116,42 @@ public class Tienda implements ComprarProducto {
     @Override
     public void comprarProducto(String id, int cantidad, double precio, ListaProductos listaProductos) {
         double importe;
+        boolean saldoValido = true;
+        boolean stockValido = true;
+
+        System.out.println("\n--------Compra--------\n");
+
         int stockTotal = getStockTotal(listaProductos);
+
+        System.out.println(
+                stockTotal
+        );
 
         importe = calcularImporte(cantidad, precio);
         //Valida saldo suficiente para realizar compra
         if (!verificarSaldo(precio, cantidad, importe)){
             System.out.println("Saldo insuficiente, El producto no podrá ser agregado a la tienda");
-            return;
+            saldoValido = false;
         }
         //Valida se haya alcanzado el stock maximo
         if (!verificarStockMaximo(stockTotal, cantidad)){
             System.out.println("Stock Maximo alcanzado");
+            stockValido = false;
+        }
+
+        if (!stockValido || !saldoValido){
+            System.out.println("\n--------Compra Cancelada--------\n");
             return;
         }
 
         //Luego de validar, saldo y stock se busca el Producto por id
         Producto producto = listaProductos.obtenerProductoPorId(id);
 
+
         //Se evalua si el producto existe
         if (producto == null) {
             System.out.println("No se encontro el producto con id: " + id);
+            System.out.println("\n--------Compra Exitosa--------\n");
         } else {
             //Se modifican los atributos stock y precio
             System.out.println("Se encontro el producto, se realizara la actualizacion");
@@ -143,6 +159,7 @@ public class Tienda implements ComprarProducto {
             producto.setCosto(precio);
             //Se actualiza el saldo
             restarImporte(saldo, importe);
+            System.out.println("\n--------Compra Exitosa--------\n");
         }
 
     }
@@ -164,6 +181,9 @@ public class Tienda implements ComprarProducto {
 
     @Override
     public boolean verificarStockMaximo(int stockTotal, int cantidadComprada) {
+        System.out.println("Stock Maximo de Tienda: " + maxStock);
+        System.out.println("Stock actual: " + stockTotal);
+        System.out.println("Cantidad comprada: " + cantidadComprada);
         if (stockTotal + cantidadComprada > maxStock){
             return false;
         }
