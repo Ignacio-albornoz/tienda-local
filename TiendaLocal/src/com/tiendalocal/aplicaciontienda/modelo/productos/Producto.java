@@ -1,7 +1,9 @@
 package com.tiendalocal.aplicaciontienda.modelo.productos;
 
+import com.tiendalocal.aplicaciontienda.modelo.productos.interfaces.Ganancia;
+
 //Clase abstracta Producto
-public abstract class Producto {
+public abstract class Producto implements Ganancia {
     //Atributos comunes a todos los productos
     String id;
     String nombre;
@@ -76,4 +78,11 @@ public abstract class Producto {
     public void setDisponible(boolean disponible) {
         this.disponible = disponible;
     }
+
+
+    @Override
+    public String toString() {
+        return "ID: " + id;
+    }
+
 }

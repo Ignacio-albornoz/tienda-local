@@ -6,6 +6,7 @@ import com.tiendalocal.aplicaciontienda.modelo.tienda.Venta;
 import com.tiendalocal.aplicaciontienda.modelo.tienda.enums.TipoProducto;
 
 import java.time.LocalDate;
+import java.util.stream.Stream;
 
 public class Main {
     public static void main(String[] args) {
@@ -55,8 +56,13 @@ public class Main {
         listaProductos.agregarProducto(cervezaSinAlcohol);
         listaProductos.agregarProducto(prdEnvasado2);
         listaProductos.agregarProducto(prdEnvasado);
+        System.out.println("-------------APLICANDO DESCUENTOS------------------------\n");
 
 
+
+
+        System.out.println("-------------LIsta de productos con Ganancias Incorrectas------------------------\n");
+        listaProductos.imprimirListaDeProductosConGananciaIncorrecta();
 
         Tienda tiendita = new Tienda("Entropia", 50, 12500.50);
         System.out.println("");

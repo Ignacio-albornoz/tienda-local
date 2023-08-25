@@ -2,10 +2,11 @@ package com.tiendalocal.aplicaciontienda.modelo.productos;
 
 import com.tiendalocal.aplicaciontienda.modelo.productos.interfaces.Comestible;
 import com.tiendalocal.aplicaciontienda.modelo.productos.interfaces.Descuento;
+import com.tiendalocal.aplicaciontienda.modelo.productos.interfaces.Ganancia;
 
 import java.time.LocalDate;
 
-public class Bebida extends Producto implements Comestible, Descuento {
+public class Bebida extends Producto implements Comestible, Descuento, Ganancia {
     boolean contieneAlcohol;
     double graduacionAlcoholica;
     boolean importado;
@@ -78,6 +79,7 @@ public class Bebida extends Producto implements Comestible, Descuento {
         this.comestible = comestible;
     }
 
+
     //Metodos sobrescritos de la interfaz Comestible
     //TODO manejar null
     @Override
@@ -111,6 +113,19 @@ public class Bebida extends Producto implements Comestible, Descuento {
     }
 
     @Override
+    public void aplicarDescuento(int porcentajeDescuento) {
+        setPorcentajeDescuento(porcentajeDescuento);
+        if (getPorcentajeDescuento() < 0 ){
+            return;
+        }
+        setPrecioConDescuento();
+        if(getPrecioConDescuento() < 0){
+            return;
+        }
+        setEstadoDelDescuento(true);
+    }
+
+    @Override
     public void setEstadoDelDescuento(boolean estadoDelDescuento) {
         this.descuentoAplicado = estadoDelDescuento;
     }
@@ -140,5 +155,38 @@ public class Bebida extends Producto implements Comestible, Descuento {
     @Override
     public double getPrecioConDescuento() {
         return precioConDescuento;
+    }
+
+    @Override
+    public double calcularGanancia(double precioCompra, double precioVenta) {
+
+        System.out.println("-----------Calculando ganancia de: " + this.getNombre() + "-----------\n");
+
+        //Se calcula el porcentaje de ganancia usando la fórmula:
+        double porcentaje = (precioVenta - precioCompra) * 100 / precioCompra;
+
+        //Si NO es comestible se devuelve el porcentaje de ganancia
+        if (!comestible){
+            System.out.println("Ganancia validad, no es comestible");
+            System.out.println("Porcentaje ganancia: %" + porcentaje + "\n");
+            return porcentaje;
+        }
+
+        //Se verifica si el porcentaje de ganancia supera el 20%
+        if (porcentaje > 20 & comestible) {
+            System.out.println("El porcentaje de ganancia de un producto comestible no puede superar el 20%");
+
+            System.out.println("El producto no estara disponible para la venta!");
+
+            System.out.println("Porcentaje ganancia: %" + porcentaje + "\n");
+            this.setDisponible(false);
+            return -1;
+
+        } else {
+
+            //Se devuelve el porcentaje de ganancia calculado
+            System.out.println("Porcentaje ganancia: %" + porcentaje + "\n");
+            return porcentaje;
+        }
     }
 }
