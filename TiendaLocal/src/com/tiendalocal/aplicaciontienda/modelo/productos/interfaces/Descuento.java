@@ -6,6 +6,9 @@ public interface Descuento {
     public boolean getEstadoDelDescuento();
     public void setPorcentajeDescuento(int porcentajeDescuento);
     public int getPorcentajeDescuento();
+    public boolean validarDescuento(int porcentajeDescuento, int maximoPorcentajeDescuento);
     public void setPrecioConDescuento();
     public double getPrecioConDescuento();
+    public boolean validarPrecioConDescuento(int porcentajeDescuento);
+    public void borrarDescuento();
 }

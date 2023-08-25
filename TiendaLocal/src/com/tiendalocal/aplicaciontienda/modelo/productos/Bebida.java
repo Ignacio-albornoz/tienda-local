@@ -1,12 +1,12 @@
 package com.tiendalocal.aplicaciontienda.modelo.productos;
 
 import com.tiendalocal.aplicaciontienda.modelo.productos.interfaces.Comestible;
-import com.tiendalocal.aplicaciontienda.modelo.productos.interfaces.Descuento;
 import com.tiendalocal.aplicaciontienda.modelo.productos.interfaces.Ganancia;
 
 import java.time.LocalDate;
 
-public class Bebida extends Producto implements Comestible, Descuento, Ganancia {
+public class Bebida extends Producto implements Comestible, Ganancia {
+    final int DESCUENTO_MAXIMO = 15;
     boolean contieneAlcohol;
     double graduacionAlcoholica;
     boolean importado;
@@ -15,10 +15,6 @@ public class Bebida extends Producto implements Comestible, Descuento, Ganancia 
     // Atributos específicos de los productos comestibles
     LocalDate fechaVencimento;
     short calorias;
-
-    boolean descuentoAplicado;
-    int porcentajeDescuento;
-    double precioConDescuento;
 
     //TODO analizar verificacion, si contieneAlcohol = true && graduacionAlcoholica <= 0, significa contieneAlcohol = false?
     public Bebida(String id, String nombre, String descripcion, int stock, double precio, double costo, boolean contieneAlcohol, double graduacionAlcoholica, boolean importado, boolean comestible, LocalDate fechaVencimento, short calorias) {
@@ -112,49 +108,28 @@ public class Bebida extends Producto implements Comestible, Descuento, Ganancia 
         return calorias;
     }
 
+    //Metodos de Interfaz Descuento
     @Override
     public void aplicarDescuento(int porcentajeDescuento) {
+        if (!validarDescuento(porcentajeDescuento, DESCUENTO_MAXIMO)){
+            System.out.println("Descuento para el producto: " + nombre + " ID: " + id + " no pudo ser aplicado!\n");
+            return;
+        }
+
+
+        if(!validarPrecioConDescuento(porcentajeDescuento)){
+            System.out.println("Descuento para el producto: " + nombre + " ID: " + id + " no pudo ser aplicado!\n");
+            return;
+        }
+
+        //Una vez validado el porcentaja y precio seteamos los valores
         setPorcentajeDescuento(porcentajeDescuento);
-        if (getPorcentajeDescuento() < 0 ){
-            return;
-        }
         setPrecioConDescuento();
-        if(getPrecioConDescuento() < 0){
-            return;
-        }
         setEstadoDelDescuento(true);
-    }
 
-    @Override
-    public void setEstadoDelDescuento(boolean estadoDelDescuento) {
-        this.descuentoAplicado = estadoDelDescuento;
-    }
-
-    @Override
-    public boolean getEstadoDelDescuento() {
-        return descuentoAplicado;
-    }
-
-    @Override
-    public void setPorcentajeDescuento(int porcentajeDescuento) {
-        this.porcentajeDescuento = porcentajeDescuento;
-    }
-
-    @Override
-    public int getPorcentajeDescuento() {
-        return porcentajeDescuento;
-    }
-
-    @Override
-    public void setPrecioConDescuento() {
-        if(descuentoAplicado && porcentajeDescuento > 0){
-            this.precioConDescuento = precio - (precio * porcentajeDescuento / 100);
-        }
-    }
-
-    @Override
-    public double getPrecioConDescuento() {
-        return precioConDescuento;
+        //mostramos productos despues del cambio
+        System.out.println("Producto: " + nombre + ", Precio: " + precio + ", Descuento: " + descuentoAplicado + ", Precio Promocional: " + precioConDescuento + ", Descuento del %" + porcentajeDescuento);
+        System.out.println("");
     }
 
     @Override
@@ -188,5 +163,27 @@ public class Bebida extends Producto implements Comestible, Descuento, Ganancia 
             System.out.println("Porcentaje ganancia: %" + porcentaje + "\n");
             return porcentaje;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Bebida{" +
+                "contieneAlcohol=" + contieneAlcohol +
+                ", graduacionAlcoholica=" + graduacionAlcoholica +
+                ", importado=" + importado +
+                ", comestible=" + comestible +
+                ", fechaVencimento=" + fechaVencimento +
+                ", calorias=" + calorias +
+                ", id='" + id + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                ", stock=" + stock +
+                ", precio=" + precio +
+                ", costo=" + costo +
+                ", disponible=" + disponible +
+                ", descuentoAplicado=" + descuentoAplicado +
+                ", porcentajeDescuento=" + porcentajeDescuento +
+                ", precioConDescuento=" + precioConDescuento +
+                '}';
     }
 }

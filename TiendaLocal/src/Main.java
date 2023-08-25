@@ -58,7 +58,19 @@ public class Main {
         listaProductos.agregarProducto(prdEnvasado);
         System.out.println("-------------APLICANDO DESCUENTOS------------------------\n");
 
+        Producto aguaMineral2 = listaProductos.obtenerProductoPorId("HHH888");
 
+        aguaMineral2.aplicarDescuento(15);
+
+        System.out.println(aguaMineral);
+
+        aguaMineral2.aplicarDescuento(100);
+
+        System.out.println(aguaMineral);
+
+        aguaMineral.aplicarDescuento(40);
+
+        System.out.println(aguaMineral);
 
 
         System.out.println("-------------LIsta de productos con Ganancias Incorrectas------------------------\n");

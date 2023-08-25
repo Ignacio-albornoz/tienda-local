@@ -2,12 +2,11 @@ package com.tiendalocal.aplicaciontienda.modelo.productos;
 
 import com.tiendalocal.aplicaciontienda.modelo.productos.enums.TipoEnvase;
 import com.tiendalocal.aplicaciontienda.modelo.productos.interfaces.Comestible;
-import com.tiendalocal.aplicaciontienda.modelo.productos.interfaces.Descuento;
 import com.tiendalocal.aplicaciontienda.modelo.productos.interfaces.Ganancia;
 
 import java.time.LocalDate;
 
-public class ProductoEnvasado extends Producto implements Comestible, Descuento, Ganancia {
+public class ProductoEnvasado extends Producto implements Comestible, Ganancia {
     final int DESCUENTO_MAXIMO = 20;
     TipoEnvase tipoEnvase; //enum TipoEnvase (plastico, vidrio o lata)
     boolean importado;
@@ -16,11 +15,6 @@ public class ProductoEnvasado extends Producto implements Comestible, Descuento,
     //Atributos específicos para productos comestibles
     LocalDate fechaVencimento;
     short calorias;
-
-    //Atributos específicos para aplicar descuento
-    boolean descuentoAplicado;
-    int porcentajeDescuento;
-    double precioConDescuento;
 
     public ProductoEnvasado(String id, String nombre, String descripcion, int stock, double precio, double costo, TipoEnvase tipoEnvase, boolean importado) {
         super(id, nombre, descripcion, stock, precio, costo);
@@ -100,32 +94,6 @@ public class ProductoEnvasado extends Producto implements Comestible, Descuento,
         return calorias;
     }
 
-
-    @Override
-    public void aplicarDescuento(int porcentajeDescuento) {
-        setPorcentajeDescuento(porcentajeDescuento);
-        if (getPorcentajeDescuento() < 0 ){
-            return;
-        }
-        setPrecioConDescuento();
-        if(getPrecioConDescuento() < 0){
-            return;
-        }
-        setEstadoDelDescuento(true);
-    }
-
-    //Metodos de Interfaz Descuento
-
-    @Override
-    public void setEstadoDelDescuento(boolean estadoDelDescuento) {
-        this.descuentoAplicado = estadoDelDescuento;
-    }
-
-    @Override
-    public boolean getEstadoDelDescuento() {
-        return descuentoAplicado;
-    }
-
     @Override
     public void setPorcentajeDescuento(int porcentajeDescuento) {
         if (porcentajeDescuento > 0 & porcentajeDescuento < DESCUENTO_MAXIMO){
@@ -144,31 +112,38 @@ public class ProductoEnvasado extends Producto implements Comestible, Descuento,
         return porcentajeDescuento;
     }
 
+    //Metodos de Interfaz Descuento
     @Override
-    public void setPrecioConDescuento() {
-
-        if (this.porcentajeDescuento <= 0){
-            System.out.println("Porcentaje de descuento no valido");
+    public void aplicarDescuento(int porcentajeD) {
+        if (!validarDescuento(porcentajeDescuento, DESCUENTO_MAXIMO)){
+            System.out.println("Descuento para el producto: " + nombre + " ID: " + id + " no pudo ser aplicado!\n");
+            return;
         }
 
-        this.precioConDescuento = precio - (precio * porcentajeDescuento / 100);
 
-        System.out.println("Prueba precio con descuento: " + this.precioConDescuento);
+        if(!validarPrecioConDescuento(porcentajeDescuento)){
+            System.out.println("Descuento para el producto: " + nombre + " ID: " + id + " no pudo ser aplicado!\n");
+            return;
+        }
+        /*
+        *
+        int valorEntrada = 1;
+        System.out.println("Tiene un precio promociona aplicado, desea ingresar uno nuevo?");
+        System.out.println("Ingreses 1 para agregar el nuevo descuento de: %" + porcentajeD );
+        System.out.println("Si quiere mantener promocion anterior de: %" + porcentajeDescuento + " oprima cualquier otra tecla");
+        */
+
+        //Una vez validado el porcentaja y precio seteamos los valores
+        setPorcentajeDescuento(porcentajeD);
+        setPrecioConDescuento();
+        setEstadoDelDescuento(true);
+
+        //mostramos productos despues del cambio
+        System.out.println("Producto: " + nombre + ", Precio: " + precio + ", Descuento: " + descuentoAplicado + ", Precio Promocional: " + precioConDescuento + ", Descuento del %" + porcentajeDescuento);
+        System.out.println("");
 
     }
 
-    @Override
-    public double getPrecioConDescuento() {
-        if (!this.descuentoAplicado){
-            System.out.println("No hay descuento aplicado");
-            return -1;
-        }
-        if (this.porcentajeDescuento <= 0){
-            System.out.println("Porcentaje de descuento no valido");
-            return -1;
-        }
-        return precioConDescuento;
-    }
 
     @Override
     public double calcularGanancia(double precioCompra, double precioVenta) {
@@ -200,5 +175,27 @@ public class ProductoEnvasado extends Producto implements Comestible, Descuento,
             System.out.println("Porcentaje ganancia: %" + porcentaje + "\n");
             return porcentaje;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "ProductoEnvasado{" +
+                "DESCUENTO_MAXIMO=" + DESCUENTO_MAXIMO +
+                ", tipoEnvase=" + tipoEnvase +
+                ", importado=" + importado +
+                ", comestible=" + comestible +
+                ", fechaVencimento=" + fechaVencimento +
+                ", calorias=" + calorias +
+                ", id='" + id + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                ", stock=" + stock +
+                ", precio=" + precio +
+                ", costo=" + costo +
+                ", disponible=" + disponible +
+                ", descuentoAplicado=" + descuentoAplicado +
+                ", porcentajeDescuento=" + porcentajeDescuento +
+                ", precioConDescuento=" + precioConDescuento +
+                '}';
     }
 }

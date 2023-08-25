@@ -7,9 +7,6 @@ import com.tiendalocal.aplicaciontienda.modelo.productos.interfaces.Ganancia;
 public class ProductoLimpieza extends Producto implements Descuento, Ganancia {
     final int DESCUENTO_MAXIMO = 25;
     TipoAplicacion tipoAplicacion;
-    boolean descuentoAplicado;
-    int porcentajeDescuento;
-    double precioConDescuento;
 
     public ProductoLimpieza(String id, String nombre, String descripcion, int stock, double precio, double costo, boolean disponible, TipoAplicacion tipoAplicacion) {
         super(id, nombre, descripcion, stock, precio, costo);
@@ -24,71 +21,31 @@ public class ProductoLimpieza extends Producto implements Descuento, Ganancia {
         this.tipoAplicacion = tipoAplicacion;
     }
 
-    //Metodos de Interfaz Descuento
+    public int getDESCUENTO_MAXIMO() {
+        return DESCUENTO_MAXIMO;
+    }
 
     @Override
     public void aplicarDescuento(int porcentajeDescuento) {
+        if (!validarDescuento(porcentajeDescuento, DESCUENTO_MAXIMO)){
+            System.out.println("Descuento para el producto: " + nombre + " ID: " + id + " no pudo ser aplicado!\n");
+            return;
+        }
+
+
+        if(!validarPrecioConDescuento(porcentajeDescuento)){
+            System.out.println("Descuento para el producto: " + nombre + " ID: " + id + " no pudo ser aplicado!\n");
+            return;
+        }
+
+        //Una vez validado el porcentaja y precio seteamos los valores
         setPorcentajeDescuento(porcentajeDescuento);
-        if (getPorcentajeDescuento() < 0 ){
-            return;
-        }
         setPrecioConDescuento();
-        if(getPrecioConDescuento() < 0){
-            return;
-        }
         setEstadoDelDescuento(true);
-    }
 
-    @Override
-    public void setEstadoDelDescuento(boolean estadoDelDescuento) {
-        this.descuentoAplicado = estadoDelDescuento;
-    }
-
-    @Override
-    public boolean getEstadoDelDescuento() {
-        return descuentoAplicado;
-    }
-
-    @Override
-    public int getPorcentajeDescuento() {
-        return porcentajeDescuento;
-    }
-    public void setPorcentajeDescuento(int porcentajeDescuento) {
-        if (porcentajeDescuento > 0 & porcentajeDescuento < DESCUENTO_MAXIMO){
-            System.out.println("Descuento valido");
-            System.out.println("Descuento asignado: " + porcentajeDescuento + "%\n");
-
-            this.porcentajeDescuento = porcentajeDescuento;
-        } else {
-            System.out.println(porcentajeDescuento + "% no es un descuento valido");
-        }
-    }
-
-    @Override
-    public void setPrecioConDescuento() {
-
-        if (!this.descuentoAplicado){
-            System.out.println("No hay descuento aplicado");
-        }
-        if (this.porcentajeDescuento <= 0){
-            System.out.println("Porcentaje de descuento no valido");
-        }
-
-        this.precioConDescuento = precio - (precio * porcentajeDescuento / 100);
-
-        System.out.println("Prueba precio con descuento: " + this.precioConDescuento);
-
-    }
-
-    @Override
-    public double getPrecioConDescuento() {
-        if (!this.descuentoAplicado){
-            System.out.println("No hay descuento aplicado");
-        }
-        if (this.porcentajeDescuento <= 0){
-            System.out.println("Porcentaje de descuento no valido");
-        }
-        return precioConDescuento;
+        //mostramos productos despues del cambio
+        System.out.println("Producto: " + nombre + ", Precio: " + precio + ", Descuento: " + descuentoAplicado + ", Precio Promocional: " + precioConDescuento + ", Descuento del %" + porcentajeDescuento);
+        System.out.println("");
     }
 
     @Override
@@ -132,5 +89,23 @@ public class ProductoLimpieza extends Producto implements Descuento, Ganancia {
                 return -1;
             }
         }
+    }
+
+    @Override
+    public String toString() {
+        return "ProductoLimpieza{" +
+                "DESCUENTO_MAXIMO=" + DESCUENTO_MAXIMO +
+                ", tipoAplicacion=" + tipoAplicacion +
+                ", id='" + id + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                ", stock=" + stock +
+                ", precio=" + precio +
+                ", costo=" + costo +
+                ", disponible=" + disponible +
+                ", descuentoAplicado=" + descuentoAplicado +
+                ", porcentajeDescuento=" + porcentajeDescuento +
+                ", precioConDescuento=" + precioConDescuento +
+                '}';
     }
 }
