@@ -85,6 +85,11 @@ public abstract class Producto implements Descuento, Ganancia {
         this.disponible = disponible;
     }
 
+    public double porcentajeGanancia(double precioCompra, double precioVenta){
+        double porcentaje = (precioVenta - precioCompra) * 100 / precioCompra;
+        return porcentaje;
+    }
+
 
     @Override
     public void aplicarDescuento(int porcentajeDescuento) {

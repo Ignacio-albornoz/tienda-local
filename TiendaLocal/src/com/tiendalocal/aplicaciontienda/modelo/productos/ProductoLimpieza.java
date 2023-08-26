@@ -8,7 +8,7 @@ public class ProductoLimpieza extends Producto implements Descuento, Ganancia {
     final int DESCUENTO_MAXIMO = 25;
     TipoAplicacion tipoAplicacion;
 
-    public ProductoLimpieza(String id, String nombre, String descripcion, int stock, double precio, double costo, boolean disponible, TipoAplicacion tipoAplicacion) {
+    public ProductoLimpieza(String id, String nombre, String descripcion, int stock, double precio, double costo, TipoAplicacion tipoAplicacion) {
         super(id, nombre, descripcion, stock, precio, costo);
         this.tipoAplicacion = tipoAplicacion;
     }
@@ -26,20 +26,20 @@ public class ProductoLimpieza extends Producto implements Descuento, Ganancia {
     }
 
     @Override
-    public void aplicarDescuento(int porcentajeDescuento) {
-        if (!validarDescuento(porcentajeDescuento, DESCUENTO_MAXIMO)){
+    public void aplicarDescuento(int porcentajeD) {
+        if (!validarDescuento(porcentajeD, DESCUENTO_MAXIMO)){
             System.out.println("Descuento para el producto: " + nombre + " ID: " + id + " no pudo ser aplicado!\n");
             return;
         }
 
 
-        if(!validarPrecioConDescuento(porcentajeDescuento)){
+        if(!validarPrecioConDescuento(porcentajeD)){
             System.out.println("Descuento para el producto: " + nombre + " ID: " + id + " no pudo ser aplicado!\n");
             return;
         }
 
         //Una vez validado el porcentaja y precio seteamos los valores
-        setPorcentajeDescuento(porcentajeDescuento);
+        setPorcentajeDescuento(porcentajeD);
         setPrecioConDescuento();
         setEstadoDelDescuento(true);
 
@@ -93,19 +93,10 @@ public class ProductoLimpieza extends Producto implements Descuento, Ganancia {
 
     @Override
     public String toString() {
-        return "ProductoLimpieza{" +
-                "DESCUENTO_MAXIMO=" + DESCUENTO_MAXIMO +
-                ", tipoAplicacion=" + tipoAplicacion +
+        return "ProductoLimpieza" +
                 ", id='" + id + '\'' +
                 ", nombre='" + nombre + '\'' +
-                ", descripcion='" + descripcion + '\'' +
                 ", stock=" + stock +
-                ", precio=" + precio +
-                ", costo=" + costo +
-                ", disponible=" + disponible +
-                ", descuentoAplicado=" + descuentoAplicado +
-                ", porcentajeDescuento=" + porcentajeDescuento +
-                ", precioConDescuento=" + precioConDescuento +
-                '}';
+                ", precio=" + precio;
     }
 }

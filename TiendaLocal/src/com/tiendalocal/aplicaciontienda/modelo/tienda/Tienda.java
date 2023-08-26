@@ -47,6 +47,16 @@ public class Tienda implements ComprarProducto {
         this.saldo = saldo;
     }
 
+    public void todosLosProductos(ListaProductos listaProductos){
+        Stream<String> productoStream = productos.keySet().stream();
+
+        productoStream.forEach(producto -> {
+            Producto p = listaProductos.obtenerProductoPorId(producto);
+            System.out.println("Nombre: " + p.getNombre() + "ID: " + p.getId());
+        });
+
+
+    }
 
 
     public void agregarProducto(String id, ListaProductos listaProductos){

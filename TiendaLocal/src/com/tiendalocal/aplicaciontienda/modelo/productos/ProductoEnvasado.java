@@ -115,13 +115,13 @@ public class ProductoEnvasado extends Producto implements Comestible, Ganancia {
     //Metodos de Interfaz Descuento
     @Override
     public void aplicarDescuento(int porcentajeD) {
-        if (!validarDescuento(porcentajeDescuento, DESCUENTO_MAXIMO)){
+        if (!validarDescuento(porcentajeD, DESCUENTO_MAXIMO)){
             System.out.println("Descuento para el producto: " + nombre + " ID: " + id + " no pudo ser aplicado!\n");
             return;
         }
 
 
-        if(!validarPrecioConDescuento(porcentajeDescuento)){
+        if(!validarPrecioConDescuento(porcentajeD)){
             System.out.println("Descuento para el producto: " + nombre + " ID: " + id + " no pudo ser aplicado!\n");
             return;
         }
@@ -179,23 +179,10 @@ public class ProductoEnvasado extends Producto implements Comestible, Ganancia {
 
     @Override
     public String toString() {
-        return "ProductoEnvasado{" +
-                "DESCUENTO_MAXIMO=" + DESCUENTO_MAXIMO +
-                ", tipoEnvase=" + tipoEnvase +
-                ", importado=" + importado +
-                ", comestible=" + comestible +
-                ", fechaVencimento=" + fechaVencimento +
-                ", calorias=" + calorias +
+        return "ProductoEnvasado" +
                 ", id='" + id + '\'' +
                 ", nombre='" + nombre + '\'' +
-                ", descripcion='" + descripcion + '\'' +
                 ", stock=" + stock +
-                ", precio=" + precio +
-                ", costo=" + costo +
-                ", disponible=" + disponible +
-                ", descuentoAplicado=" + descuentoAplicado +
-                ", porcentajeDescuento=" + porcentajeDescuento +
-                ", precioConDescuento=" + precioConDescuento +
-                '}';
+                ", precio=" + precio;
     }
 }

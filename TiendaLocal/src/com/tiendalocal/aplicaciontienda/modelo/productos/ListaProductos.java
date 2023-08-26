@@ -12,6 +12,7 @@ public class ListaProductos {
     public Producto obtenerProductoPorId(String id) {
         Producto producto = listaProductos.get(id);
         if (producto != null) {
+            System.out.println(producto.toString());
             return producto;
         }
         System.out.println("El producto con id: " + id + " NO se encontro");
@@ -39,6 +40,12 @@ public class ListaProductos {
 
     public void borrarProducto(String id) {
         listaProductos.remove(id);
+    }
+
+    public void todosLosProductos(){
+        Stream<Producto> streamProductos = listaProductos.values().stream();
+
+        streamProductos.forEach(System.out::println);
     }
 
     public void modificarPrecio(String id, double precio) {
@@ -126,13 +133,12 @@ public class ListaProductos {
         });
     }
 
-    public List<Producto> listarProductosConUtilidadesInferiores(double porcentaje_utilidad) {
+    public List<Producto> listarProductosConUtilidadesInferiores(int porcentaje_utilidad) {
         //Se crea un stream de la lista o el mapa de productos
         Stream<Producto> streamProductos = listaProductos.values().stream();
 
-        //Se filtra el stream usando el método calcularGanancia de la interfaz Precio
         //Se incluyen solo los productos que tengan una ganancia menor que el porcentaje dado
-        Stream<Producto> streamFiltrado = streamProductos.filter(p -> p.calcularGanancia(p.getCosto(), p.getPrecio()) < porcentaje_utilidad);
+        Stream<Producto> streamFiltrado = streamProductos.filter(p ->  p.porcentajeGanancia(p.getCosto(), p.getPrecio()) < porcentaje_utilidad );
 
         //Se convierte el stream filtrado en una lista y se devuelve como resultado
         return streamFiltrado.collect(Collectors.toList());

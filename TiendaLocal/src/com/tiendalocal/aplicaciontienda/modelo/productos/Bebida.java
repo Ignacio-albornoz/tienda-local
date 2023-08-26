@@ -112,20 +112,20 @@ public class Bebida extends Producto implements Comestible, Ganancia, Impuesto {
 
     //Metodos de Interfaz Descuento
     @Override
-    public void aplicarDescuento(int porcentajeDescuento) {
-        if (!validarDescuento(porcentajeDescuento, DESCUENTO_MAXIMO)){
+    public void aplicarDescuento(int porcentajeD) {
+        if (!validarDescuento(porcentajeD, DESCUENTO_MAXIMO)){
             System.out.println("Descuento para el producto: " + nombre + " ID: " + id + " no pudo ser aplicado!\n");
             return;
         }
 
 
-        if(!validarPrecioConDescuento(porcentajeDescuento)){
+        if(!validarPrecioConDescuento(porcentajeD)){
             System.out.println("Descuento para el producto: " + nombre + " ID: " + id + " no pudo ser aplicado!\n");
             return;
         }
 
         //Una vez validado el porcentaja y precio seteamos los valores
-        setPorcentajeDescuento(porcentajeDescuento);
+        setPorcentajeDescuento(porcentajeD);
         setPrecioConDescuento();
         setEstadoDelDescuento(true);
 
@@ -169,24 +169,11 @@ public class Bebida extends Producto implements Comestible, Ganancia, Impuesto {
 
     @Override
     public String toString() {
-        return "Bebida{" +
-                "contieneAlcohol=" + contieneAlcohol +
-                ", graduacionAlcoholica=" + graduacionAlcoholica +
-                ", importado=" + importado +
-                ", comestible=" + comestible +
-                ", fechaVencimento=" + fechaVencimento +
-                ", calorias=" + calorias +
+        return "Bebida" +
                 ", id='" + id + '\'' +
                 ", nombre='" + nombre + '\'' +
-                ", descripcion='" + descripcion + '\'' +
                 ", stock=" + stock +
-                ", precio=" + precio +
-                ", costo=" + costo +
-                ", disponible=" + disponible +
-                ", descuentoAplicado=" + descuentoAplicado +
-                ", porcentajeDescuento=" + porcentajeDescuento +
-                ", precioConDescuento=" + precioConDescuento +
-                '}';
+                ", precio=" + precio;
     }
 
     @Override

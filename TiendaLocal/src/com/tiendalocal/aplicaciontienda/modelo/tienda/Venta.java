@@ -49,10 +49,17 @@ public class Venta {
     public void agregarProductoAlCarrito(Producto producto, int cantidad){
         System.out.println("\n");
         System.out.println("Nueva venta:");
+        System.out.println("--------------------------------------------");
+        System.out.println("\n");
+
         double importe;
+        double precioPromocional = 0;
         boolean cantidadDeProductosCorrecta = true;
         boolean cantidadDeProductosEnElCarritoCorrecta = true;
 
+        if (producto.getStock() <= 0){
+            return;
+        }
 
         //Se verifica el producto este disponible
         if (!producto.isDisponible()){
@@ -75,10 +82,23 @@ public class Venta {
             return;
         }
 
+        if (producto.getEstadoDelDescuento() & producto.getPrecioConDescuento() > 0){
+
+            precioPromocional = producto.getPrecioConDescuento();
+
+        }
+
         //Se verifica si la cantidad es menor, mayor o igual al stock del producto
         if (cantidad <= producto.getStock()){
+
+
             //Se calcula el importe
-            importe = calcularImporte(cantidad, producto.getPrecio());
+            if (precioPromocional > 0){
+                importe = calcularImporte(cantidad, producto.getPrecioConDescuento());
+            } else {
+                importe = calcularImporte(cantidad, producto.getPrecio());
+            }
+
 
             //Se agrega el producto al carrito
             carrito.put(producto.getId(), cantidad);
@@ -92,13 +112,18 @@ public class Venta {
             carrito.put(producto.getId(), producto.getStock());
 
             //Se calcula el importe
-            importe = calcularImporte(producto.getStock(), producto.getPrecio());
-
+            if (precioPromocional > 0){
+                importe = calcularImporte(cantidad, producto.getPrecioConDescuento());
+            } else {
+                importe = calcularImporte(cantidad, producto.getPrecio());
+            }
             //Se suma el importe al precio total
             precioTotal += importe;
 
             System.out.println("El producto " + producto.getNombre()  + ", ID: "+ producto.getId() + "\nTiene stock disponible menor al solicitado");
             System.out.println("Se agregaron: " + producto.getStock() + " unidades de " + producto.getNombre());
+            System.out.println("\n");
+            System.out.println("--------------------------------------------");
         }
 
     }
@@ -109,6 +134,7 @@ public class Venta {
         imprimirDetalle(listaProductos);
         //Se suma la venta total al saldo
         tienda.sumarSaldoPorVenta(precioTotal);
+
 
         //Se buscan los productos que deben ser actualizados
         carrito.forEach((id, cantidad) -> {
@@ -127,15 +153,27 @@ public class Venta {
 
     public void imprimirDetalle(ListaProductos listaProductos){
         if (carrito.size() == 0){
+            System.out.println("--------------------------------------------");
             System.out.println("Su carrito esta vacio!");
+            System.out.println("\n");
             return;
         }
 
         carrito.forEach((id, cantidad) -> {
             Producto producto = listaProductos.obtenerProductoPorId(id);
-            System.out.println(producto.getId() + " " + producto.getNombre() + " " + cantidad + " x $" + producto.getPrecio() + " = $" + ( cantidad * producto.getPrecio()));
+            if (producto.getEstadoDelDescuento()){
+                System.out.println("--------------------------------------------");
+                System.out.println("El articulo se encuentra en descuento");
+                System.out.println(producto.getId() + " " + producto.getNombre() + " " + cantidad + " x $" + producto.getPrecio() + " = $" + ( cantidad * producto.getPrecioConDescuento()));
+                System.out.println("\n");
+            }else {
+                System.out.println("\n");
+                System.out.println(producto.getId() + " " + producto.getNombre() + " " + cantidad + " x $" + producto.getPrecio() + " = $" + ( cantidad * producto.getPrecio()));
+                System.out.println("--------------------------------------------");
+            }
         });
         System.out.println("TOTAL VENTA: $" + precioTotal);
+        System.out.println("--------------------------------------------");
 
     }
 }
